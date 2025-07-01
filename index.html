@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Emergentes II</title>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* bg-gray-100 */
+            padding: 1rem; /* p-4 */
+            min-height: 100vh; /* min-h-screen */
+            display: flex;
+            align-items: center; /* items-center */
+            justify-content: center; /* justify-center */
+        }
+
+        .container {
+            max-width: 48rem; /* max-w-3xl */
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #ffffff; /* bg-white */
+            padding: 1.5rem; /* p-6 */
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-lg */
+            width: 100%; /* Asegura que el contenedor ocupe el ancho disponible */
+        }
+
+        h2 {
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 700; /* font-bold */
+            text-align: center; /* text-center */
+            color: #1d4ed8; /* text-blue-700 */
+            margin-bottom: 1.5rem; /* mb-6 */
+        }
+
+        .controls-group {
+            display: flex;
+            flex-direction: column; /* flex-col */
+            gap: 1rem; /* gap-4 */
+            margin-bottom: 1.5rem; /* mb-6 */
+            align-items: center; /* items-center */
+            justify-content: center; /* justify-center */
+        }
+
+        label {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 500; /* font-medium */
+            color: #374151; /* text-gray-700 */
+        }
+
+        select {
+            flex-grow: 1; /* flex-grow */
+            padding: 0.75rem; /* p-3 */
+            border: 1px solid #d1d5db; /* border border-gray-300 */
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+            font-size: 1rem; /* text-base */
+            width: 100%; /* w-full */
+            -webkit-appearance: none; /* Remove default select styling */
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem; /* Space for the custom arrow */
+        }
+
+        select:focus {
+            outline: 2px solid transparent; /* focus:outline-none */
+            outline-offset: 2px;
+            box-shadow: 0 0 0 2px #bfdbfe, 0 0 0 4px #3b82f6; /* focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 */
+            border-color: #3b82f6; /* focus:border-blue-500 */
+        }
+
+        button {
+            width: 100%; /* w-full */
+            padding: 0.75rem 1.5rem; /* px-6 py-3 */
+            background-color: #2563eb; /* bg-blue-600 */
+            color: #ffffff; /* text-white */
+            font-weight: 600; /* font-semibold */
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+            transition: background-color 150ms ease-in-out; /* transition duration-150 ease-in-out */
+            font-size: 1rem; /* text-base */
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1d4ed8; /* hover:bg-blue-700 */
+        }
+
+        button:focus {
+            outline: 2px solid transparent; /* focus:outline-none */
+            outline-offset: 2px;
+            box-shadow: 0 0 0 2px #bfdbfe, 0 0 0 4px #3b82f6; /* focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 */
+        }
+
+        form {
+            margin-top: 1rem; /* space-y-4 (for form elements, handled by JS) */
+        }
+
+        #resultado {
+            margin-top: 2rem; /* mt-8 */
+            padding: 1rem; /* p-4 */
+            border-radius: 0.5rem; /* rounded-lg */
+            text-align: center; /* text-center */
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 700; /* font-bold */
+        }
+
+        /* Existing CSS classes that need to be adapted or removed from main.js if they interfere */
+        .pregunta {
+            background-color: #ffffff; /* bg-white */
+            padding: 1rem; /* p-4 */
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* shadow-md */
+            margin-bottom: 1rem; /* mb-4 */
+        }
+        .correcta {
+            color: #16a34a; /* text-green-600 */
+            font-weight: 700; /* font-bold */
+        }
+        .incorrecta {
+            color: #dc2626; /* text-red-600 */
+            font-weight: 700; /* font-bold */
+        }
+        .opcion {
+            margin-left: 1.25rem; /* ml-5 */
+        }
+
+        /* Responsive adjustments */
+        @media (min-width: 640px) { /* sm: breakpoint */
+            body {
+                padding: 1.5rem; /* sm:p-6 */
+            }
+            .container {
+                padding: 2rem; /* sm:p-8 */
+            }
+            h2 {
+                font-size: 1.875rem; /* sm:text-3xl */
+            }
+            .controls-group {
+                flex-direction: row; /* sm:flex-row */
+            }
+            button {
+                width: auto; /* sm:w-auto */
+                font-size: 1.125rem; /* sm:text-lg */
+            }
+            select {
+                font-size: 1.125rem; /* sm:text-lg */
+            }
+        }
+
+        @media (min-width: 768px) { /* md: breakpoint */
+            body {
+                padding: 2rem; /* md:p-8 */
+            }
+        }
+    </style>
+    <!-- Tus scripts de preguntas -->
+    <script src="js/main.js" defer></script>
+    <script src="js/preguntas_flask.js" defer></script>
+    <script src="js/preguntas_aplicaciones_web.js" defer></script>
+    <script src="js/preguntas_entornos_virtuales.js" defer></script>
+    <script src="js/preguntas_flask_intro.js" defer></script>
+    <script src="js/preguntas_jinja2.js" defer></script>
+    <script src="js/preguntas_request_response.js" defer></script>
+    <script src="js/preguntas_sesiones_cookies.js" defer></script>
+    <script src="js/preguntas_conexion_bd.js" defer></script>
+    <script src="js/preguntas_login.js" defer></script>
+    <script src="js/preguntas_bateria_preguntas.js" defer></script>
+    <script src="js/preguntas_examen_final_completo.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h2>📘 Simulador de Examen Final - Tecnologías Emergentes II</h2>
+
+        <div class="controls-group">
+            <label for="moduloSelect">Selecciona un módulo:</label>
+            <select id="moduloSelect">
+                <option value="preguntas_flask">1.- Flask</option>
+                <option value="preguntas_aplicaciones_web">2. Aplicaciones Web con Python</option>
+                <option value="preguntas_entornos_virtuales">3.- Ambientes virtuales en Python</option>
+                <option value="preguntas_flask_intro">4.- Introducción a Flask</option>
+                <option value="preguntas_jinja2">5.- Jinja2</option>
+                <option value="preguntas_request_response">6.- Request y Response</option>
+                <option value="preguntas_sesiones_cookies">7.- Sesiones y Cookies</option>
+                <option value="preguntas_conexion_bd">8.- Conexión a Base de Datos</option>
+                <option value="preguntas_login">9.- Login</option>
+                <option value="preguntas_bateria_preguntas">10.- Batería de Preguntas</option>
+                <option value="preguntas_examen_final_completo">Examen Final Completo</option>
+            </select>
+            <button onclick="cargarPreguntas()">
+                Cargar preguntas
+            </button>
+        </div>
+
+        <form id="formulario"></form>
+        <div id="resultado"></div>
+    </div>
+</body>
+</html>
